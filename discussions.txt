@@ -1,0 +1,31 @@
+Checks and critieria for blue space:
+
+- strip the the item ids, supplier part number and shortcode of all the special characters and prefixes
+- item id shouldn't have any special characters
+- supplier part number = shortcode 
+- itemid = supplier part number
+- product group = bcs inventory
+- buyable in good locations
+- sellable in good locations
+- no locations deleted
+- no locations discountinued
+- purchase discount groups = default
+- sales discount group - NPBSINV
+- supplier list = 0
+- supplier cost = 0
+- if MAC, then use it, elif use PO price within 6 months, else 0
+- p1
+- restricted item / restricted class = null / blank
+
+
+Checks and critieria for Purple space:
+- dont focus on prefix - leave it
+- stockable = N
+- replenishment method - min/max
+- min and max = 0
+- replenishment locations = sales locations
+- no restriction set
+- track bin = N
+- primary bin = N
+- check p1
+- on vendor price book = N

@@ -34,3 +34,4 @@ Checks and critieria for Purple space:
 Things to do:
 - inbound price increases - AI excel and pdf files (read and save in tabular format)
 - price book mapping from the folders
+- mails test

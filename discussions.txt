@@ -12,10 +12,16 @@ Checks and critieria for blue space:
 - purchase discount groups = default
 - sales discount group - NPBSINV
 - supplier list = 0
-- supplier cost = 0
+- Standard cost = 0
 - if MAC, then use it, elif use PO price within 6 months, else 0
 - p1
 - restricted item / restricted class = null / blank
+- if Standard cost != 0 then Standard cost update > 0
+
+Exec bcs_sp_master_data_item_loc_review_npbsi
+
+
+
 
 
 Checks and critieria for Purple space:
@@ -31,6 +37,10 @@ Checks and critieria for Purple space:
 - on vendor price book = N
 
 
+Exec bcs_sp_master_data_item_loc_review_npbsi_ns
+
+
 Things to do:
 - inbound price increases - AI excel and pdf files (read and save in tabular format)
 - price book mapping from the folders
+

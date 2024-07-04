@@ -79,7 +79,7 @@ def runner_main(folder_path, company_json_path):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description= "Mapping company and pricing files")
-    parser.add_argument("--folder_path", help="Give the master folder path", required=True)
+    parser.add_argument("--segment_color", help="Give the segment color - blue or purple", required=True)
 
     args = parser.parse_args()
 

@@ -10,7 +10,6 @@ import logging
 from datetime import datetime
 import json
 import BCS_connector_blue
-import BCS_connector_purple
 import Pgs_connector
 
 
@@ -63,7 +62,7 @@ class processor():
                 discrepancy_types.append("Discontinued locations")
 
             if df.loc[index, "purch_disc_grps"] == "DEFAULT":
-                discrepancy_types.append("Product disc group")
+                discrepancy_types.append("Product disc group") # question : should it include Default with others, or should it be only default
 
             if df.loc[index, "sales_disc_grps"] == "NPBSINV":
                 discrepancy_types.append("Sales disc group")

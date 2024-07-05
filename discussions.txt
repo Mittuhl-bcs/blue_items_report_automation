@@ -26,6 +26,7 @@ Exec bcs_sp_master_data_item_loc_review_npbsi
 
 
 Checks and critieria for Purple space:
+
 - strip the the item ids, supplier part number and shortcode of all the special characters and prefixes
 Note: do not change the original item id, supplier part number and shortcode - new columns for matchin purpose only 
 

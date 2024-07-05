@@ -35,5 +35,18 @@ class processor():
     # Checks the criteria given
     def checker(self, df):
 
+        discrepancy_types = []
+
+        for index, row in df.iterrows():
+            
+            if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
+                discrepancy_types.append("SPN & itemid")
+            
+            if df.loc[index, "prod_groups"] != "BCS inv":
+                discrepancy_types.append("product group")
+
+            if df.loc[index, ]
+            
+
 
         return df

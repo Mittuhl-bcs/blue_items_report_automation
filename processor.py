@@ -18,19 +18,24 @@ import Pgs_connector
 class processor():
 
     # Read the data from the BCS database
-    def read_data(self, segment_color):
+    def read_data(self):
 
-        if segment_color.lower() == "blue": 
-            # get the df and the connection
-            df = BCS_connector_blue.reader_df()
+        df = BCS_connector_blue.reader_df()
 
-        if segment_color.lower() == "purple":
-            # get the df and the connnection
-            df = BCS_connector_purple.reader_df()
+        #df = BCS_connector_purple.reader_df()
 
 
         return df
     
+
+    # Initiates columns
+    def column_initiator(self, df):
+
+        df["Discrepancy_types"] = ""
+        
+
+        return df
+
 
     # Checks the criteria given
     def checker(self, df):
@@ -45,8 +50,42 @@ class processor():
             if df.loc[index, "prod_groups"] != "BCS inv":
                 discrepancy_types.append("product group")
 
-            if df.loc[index, ]
-            
+            if df.loc[index, "buyable_locs"] != 18:
+                discrepancy_types.append("Buyable locations")
+
+            if df.loc[index, "sellable_locs"] != 18:
+                discrepancy_types.append("Sellable locations")
+
+            if df.loc[index, "delete_locs"] > 0:
+                discrepancy_types.append("Delete locations")
+
+            if df.loc[index, "discontinued_locs"] > 0:
+                discrepancy_types.append("Discontinued locations")
+
+            if df.loc[index, "purch_disc_grps"] == "DEFAULT":
+                discrepancy_types.append("Product disc group")
+
+            if df.loc[index, "sales_disc_grps"] == "NPBSINV":
+                discrepancy_types.append("Sales disc group")
+
+            if df.loc[index, "restricted_class"] != np.nan:
+                discrepancy_types.append("Restricted class")
+
+            if df.loc[index, "std_cost_update_amt"] != 0:
+                if df.loc[index, "std_cost_updates"] <= 0:
+                    discrepancy_types.append("Standard cost")
+
+            if df.loc[index, "product type"] != "R":
+                discrepancy_types.append("Product type")
+
 
 
         return df
+    
+
+    def main():
+
+        pass
+        
+        # it should return the df
+        # return df

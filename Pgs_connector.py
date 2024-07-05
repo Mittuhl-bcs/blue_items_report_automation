@@ -29,76 +29,61 @@ def connect_to_postgres(dbname, user, password, host, port):
         return None
 
 
-def read_data_into_table(connection, P21_files):
+def read_data_into_table(connection, df):
     # replace the company_df with P21_folder
 
     main_df = pd.DataFrame() 
 
-    # read the folder and the files in it
-    for i in P21_files:
-        company_df = pd.read_excel(i)
-        
-        # filter only the discrepancy ones
-        df = company_df[company_df["Discrepancy_type"] != "All right"]
-        
-        # save only the discrepancies in this df and concat the main df
-        main_df = pd.concat(main_df, df)
-
+    main_df = df.copy()
 
     cursor = connection.cursor()
 
     for index, row in main_df.iterrows():
-        """stspn = row["Stripped_supplier_PN"]
-        prefix_db = row["Prefix_of_company"]
-        matchedspn = row["Matched_pricingdoc_SPN"]
-        prefixchk = company_df["Prefix_check"]
-        onvpb = row["on_vendor_price_book"]
-        onlpb = company_df["On_latest_vendorprice_book"]
-        mismatch = company_df["Mismatch_check"]
-        costpb= company_df["Cost_on_vendors_PB"]
-        p1pb = company_df["P1_vendorsPB"] = ""
-        lppb = company_df["Listprice_on_vendors_PB"] = ""
-        costck = company_df["Cost_check"] = ""
-        p1ck = company_df["P1_check"] = ""
-        lpck = row["Listprice_check"] = ""
-        dscrpnty = row["Discrepancy_type"]
-        costp21 = row["Cost"]
-        listp21 = row["LIST_PRICE"]
-        p1p21 = row["P1"]
-        """
-
-        prefix = row["Prefix_of_company"]
-        supplier_part_number = row["Supplier_part_number"]
-        stripped_SPN = row["Stripped_supplier_PN"]
-        matched_pricingdoc_SPN = row["Matched_pricingdoc_SPN"]
-        prefix_check = row["Prefix_check"]
-        on_vendor_price_book = row["on_vendor_price_book"]
-        on_latest_price_book = row["On_latest_vendorprice_book"]
-        pb_check = row["Mismatch_check"]
-        cost = row["Cost"]
-        p1 = row["P1"]
-        list_price = row["LIST_PRICE"]
-        cost_on_vendorPB = row["Cost_on_vendors_PB"]
-        p1_on_vendorPB = row["P1_on_vendors_PB"]
-        list_price_on_vendorPB = row["Listprice_on_vendors_PB"]
-        cost_check = row["Cost_check"]
-        p1_check = row["P1_check"]
-        listprice_check = row["Listprice_check"]
-        discrepancy_types = row["Discrepancy_type"]
-        # add the other columns that are needed to be a part of the SQL database as well 
-
+        supplier_part_no = row["supplier_part_no"]
+        clean_sup_part_no = row["clean_sup_part_no"]
+        supplier_id = row["supplier_id"]
+        item_prefix = row["item_prefix"]
+        item_id = row["item_id"]
+        clean_item = row["clean_item"]
+        product_type = row["product_type"]
+        on_price_book_flag = row["on_price_book_flag"]
+        cln_location_cnt = row["cln_location_cnt"]
+        no_of_suppliers = row["no_of_suppliers"]
+        no_of_locations = row["no_of_locations"]
+        buyable_locs = row["buyable_locs"]
+        sellable_locs = row["sellable_locs"]
+        delete_locs = row["delete_locs"]
+        discontinued_locs = row["discontinued_locs"]
+        prod_groups = row["prod_groups"]
+        prod_grps = row["prod_grps"]
+        sales_disc_grp = row["sales_disc_grp"]
+        sales_disc_grps = row["sales_disc_grps"]
+        purch_disc_grp = row["purch_disc_grp"]
+        purch_disc_grps = row["purch_disc_grps"]
+        std_cost_updates = row["std_cost_updates"]
+        std_cost_update_amt = row["std_cost_update_amt"]
+        discrepancy_type = row["discrepancy_type"]
 
         # SQL query to insert data into the table
-        sql = """INSERT INTO P21_companyreview (prefix, supplier_part_number, stripped_spn, matched_pricingdoc_SPN, prefix_check,
-                on_vendor_price_book, on_latest_price_book, pb_check, cost, p1, list_price, cost_on_vendorPB,
-                p1_on_vendorPB, list_price_on_vendorPB, cost_check, p1_check, listprice_check, discrepancy_types)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        
-        # Execute the SQL query with the data from the current row
-        cursor.execute(sql, (prefix, supplier_part_number, stripped_SPN, matched_pricingdoc_SPN, prefix_check, on_vendor_price_book,
-                        on_latest_price_book, pb_check, cost, p1, list_price, cost_on_vendorPB, p1_on_vendorPB,
-                        list_price_on_vendorPB, cost_check, p1_check, listprice_check, discrepancy_types))
+        sql = """
+        INSERT INTO your_table_name (
+            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, product_type, 
+            on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
+            delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
 
+        # Execute the SQL query with the data from the current row
+        cursor.execute(sql, (
+            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, product_type, 
+            on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
+            delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
+        ))
+
+    
+    cursor.close()
         
         
 # export the csv from the database

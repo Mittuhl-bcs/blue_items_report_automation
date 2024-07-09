@@ -2,7 +2,7 @@ Checks and critieria for blue space:
 
 - strip the the item ids, supplier part number and shortcode of all the special characters and prefixes
 - item id shouldn't have any special characters
-<----- supplier part number = shortcode 
+<----- supplier part number = shortcode ?
 - itemid = supplier part number
 - product group = BCS inv
 - buyable in good locations
@@ -11,11 +11,11 @@ Checks and critieria for blue space:
 - no locations discountinued
 - purchase discount groups = default
 - sales discount group - NPBSINV
-<----- Supplier list = 0  
-<----- Supplier cost = 0  
+<----- Supplier list = 0  ?
+<----- Supplier cost = 0  ?
 <----- if MAC, then use it, elif use PO price within 6 months, else 0   #--- Standard cost   
-<----- P1   
-<----- restricted item / restricted class = null / blank  
+P1   
+- restricted item / restricted class = null / blank  
 - if Standard cost != 0 then Standard cost update > 0
 - product type = R (regular)
 

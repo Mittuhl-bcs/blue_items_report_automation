@@ -42,7 +42,12 @@ class processor():
         discrepancy_types = []
 
         for index, row in df.iterrows():
-            
+
+            cost = df.loc[index, "supplier_cost"]
+            listp = df.loc[index, "supplier_list"]
+            p1 = df.loc[index, "p1"]
+
+
             if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
                 discrepancy_types.append("SPN & itemid")
             
@@ -74,11 +79,35 @@ class processor():
                 if df.loc[index, "std_cost_updates"] <= 0:
                     discrepancy_types.append("Standard cost")
 
-            if df.loc[index, "product type"] != "R":
+            if df.loc[index, "product type"] != "Regular":
                 discrepancy_types.append("Product type")
 
+            p1_cal = round((cost / 0.65) * 2, 2)
+            p1_com = 0
+
+            if p1_cal < round(listp, 2):
+                p1_com = listp
+            else:
+                p1_com = round((cost / 0.65) * 2, 2)
+
+            
+            if p1 != p1_com:
+                discrepancy_types.append("P1")
+
+            if df.loc[index, "restricted"] != "N":
+                discrepancy_types.append("Restricted") 
 
 
+            if df.loc[index, "supplier_cost"] == 0:
+                discrepancy_types.append("Cost")
+
+            if df.loc[index, "suppier_list"] == 0:
+                discrepancy_types.append("list price")   # question: should it be zero or not zero?
+
+
+            if df.loc[index, "shortcode"] != df.loc[index, "clean_sup_part_no"]:     # needs to be included in query
+                discrepancy_types.append("shortcode & SPN")       # question: shortcode is a part of SPN?
+ 
         return df
     
 

@@ -26,7 +26,7 @@ def send_email(attachment_filename, attachment_display_name):
         # Credentials for usage
         sender_email = "Bcs.notifications@building-controls.com"  # Outlook email address
         sender_password = password  
-        receiver_emails = ["mithul.murugaadev@building-controls.com", "Jason.Bail@building-controls.com", "brian.ackerman@building-controls.com", "adam.martinez@building-controls.com", "harriette.henderson@building-controls.com"]  # List of recipient email addresses
+        receiver_emails = ["mithul.murugaadev@building-controls.com"]  # List of recipient email addresses
         subject = 'Replenishment data - checked reports'
         body = """Hi Team,
         A report of discrepancies in the Replenishment data is generated and shared through this automated mail. Please find the ZIP file attached.

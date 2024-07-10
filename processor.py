@@ -112,8 +112,13 @@ class processor():
     
 
     def main():
+        
+        processorob = processor()
+        df = processorob.read_data()
+        df = processorob.column_initiator(df)
+        df = processorob.checker(df)
 
-        pass
+        return df
         
         # it should return the df
         # return df

@@ -11,10 +11,11 @@ Checks and critieria for blue space:
 - no locations discountinued
 - purchase discount groups = default
 - sales discount group - NPBSINV
-<----- Supplier list = 0  ?
-<----- Supplier cost = 0  ?
-<----- if MAC, then use it, elif use PO price within 6 months, else 0   #--- Standard cost   
-P1   
+<----- Supplier list = 0  ? (if not zero then discrepancy)
+<----- Supplier cost = 0  ? (if not zero then discrepancy)
+<----- if max MAC (only use max mac if not 0), then use it, elif use PO price within 6 months, else 0   #--- Standard cost  
+		<----- Standard cost = max mac   
+- P1   
 - restricted item / restricted class = null / blank  
 - if Standard cost != 0 then Standard cost update > 0
 - product type = R (regular)

@@ -7,6 +7,7 @@ import logging
 import os
 import json
 import mailer
+import time
 
 
 dbname = 'BCS_items'
@@ -55,6 +56,8 @@ def runner_main(new_loop):
 
 if __name__ == "__main__":
 
+    start_time = time.time()
+
     parser = argparse.ArgumentParser(description= "Mapping company and pricing files")
     parser.add_argument("--confirm", help="Give the confirmation to run the code", required=True)
     parser.add_argument("--new_loop", help="Give the confirmation to run the code", required=True)
@@ -64,10 +67,11 @@ if __name__ == "__main__":
     confirmation = args.confirm
     new_loop = args.new_loop
     
-
-
+    
     if confirmation == "yes":
         # run the main function
         runner_main(new_loop)
 
+    timetaken = (time.time() - start_time) / 60
+    print(f"Time taken for compeletion: {timetaken:2f} mins")
  

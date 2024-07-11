@@ -72,6 +72,10 @@ if __name__ == "__main__":
         # run the main function
         runner_main(new_loop)
 
+    print("____________________________________________________________________")
+    print(" ")
+
     timetaken = (time.time() - start_time) / 60
     print(f"Time taken for compeletion: {timetaken:2f} mins")
+    print("____________________________________________________________________")
  

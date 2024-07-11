@@ -34,7 +34,7 @@ def read_data_into_table(connection, df):
 
     main_df = pd.DataFrame() 
 
-    main_df = df.copy()
+    main_df = df[df["discrepancy_types"] != "All right"]
 
     cursor = connection.cursor()
 
@@ -45,6 +45,7 @@ def read_data_into_table(connection, df):
         item_prefix = row["item_prefix"]
         item_id = row["item_id"]
         clean_item = row["clean_item"]
+        shortcode = row["short_code"]
         product_type = row["product_type"]
         on_price_book_flag = row["on_price_book_flag"]
         cln_location_cnt = row["cln_location_cnt"]
@@ -67,16 +68,16 @@ def read_data_into_table(connection, df):
         # SQL query to insert data into the table
         sql = """
         INSERT INTO blue_items (
-            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, product_type, 
+            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, short_code, product_type, 
             on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
             purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         # Execute the SQL query with the data from the current row
         cursor.execute(sql, (
-            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, product_type, 
+            supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, shortcode, product_type, 
             on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
             purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
@@ -91,11 +92,27 @@ def read_data_into_table(connection, df):
 # export the csv from the database
 def export_table_to_csv(connection, table_name, output_file):
     try:
-        cursor = connection.cursor()
-        with open(output_file, 'w') as f:
-            cursor.copy_expert(f"COPY {table_name} TO STDOUT WITH CSV HEADER", f)
-        logging.info(f"Data from table '{table_name}' successfully exported to '{output_file}'")
-        
+            cursor = connection.cursor()
+
+            with open(output_file, 'w', encoding='utf-8', newline='') as file:
+                csv_writer = csv.writer(file)
+
+                            
+                # Fetch data from the table and column headers
+                cursor.execute(f"SELECT * FROM {table_name}")
+                rows = cursor.fetchall()
+                column_names = [desc[0] for desc in cursor.description]
+                
+                # Write column headers
+                csv_writer.writerow(column_names)
+
+                # Write rows
+                for row in rows:
+                    csv_writer.writerow([
+                        str(cell).encode('utf-8', errors='replace').decode('utf-8').replace('?', 'Error character')
+                        for cell in row
+                    ])
+                    
     except psycopg2.Error as e:
         logging.error(f"Error exporting data from table '{table_name}' to CSV file")
         logging.error(e)

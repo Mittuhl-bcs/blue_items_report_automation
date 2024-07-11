@@ -5,6 +5,7 @@ CREATE TABLE blue_items (
     item_prefix VARCHAR(120),
     item_id VARCHAR(120),
     clean_item VARCHAR(120),
+    short_code VARCHAR(120),
     product_type VARCHAR(120),
     on_price_book_flag VARCHAR(120),
     cln_location_cnt VARCHAR(120),

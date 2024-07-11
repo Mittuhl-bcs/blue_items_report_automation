@@ -22,7 +22,7 @@ month =  current_time.strftime("%b")
 year = current_time.year
 
 
-def runner_main():
+def runner_main(new_loop):
 
     mapper = pmauto.processor()
     df = mapper.main()
@@ -34,11 +34,11 @@ def runner_main():
 
     # database table name and output file name
     table_name = "blue_items"
-    output_file = f"D:\\Temp_items_reports\\Discrepancies Blue items - Price matching report {day}-{month}-{year}"
+    output_file = f"D:\\Temp_items_reports\\Discrepancies - Blue items - Price matching report {day}-{month}-{year}.csv"
 
 
     conn = pgs.connect_to_postgres(dbname, user, password, host, port)
-    pgs.read_data_into_table(conn, df)
+    pgs.read_data_into_table(conn, df, new_loop)
     pgs.export_table_to_csv(conn, table_name, output_file)
     conn.close()
 
@@ -57,15 +57,17 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description= "Mapping company and pricing files")
     parser.add_argument("--confirm", help="Give the confirmation to run the code", required=True)
+    parser.add_argument("--new_loop", help="Give the confirmation to run the code", required=True)
 
     args = parser.parse_args()
 
     confirmation = args.confirm
+    new_loop = args.new_loop
     
 
 
     if confirmation == "yes":
         # run the main function
-        runner_main()
+        runner_main(new_loop)
 
  

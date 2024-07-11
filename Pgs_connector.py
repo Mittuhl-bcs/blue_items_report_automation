@@ -7,7 +7,7 @@ import csv
 
 current_time = datetime.now()
 fcurrent_time = current_time.strftime("%Y-%m-%d-%H-%M-%S")
-log_file = os.path.join("D:\\Automation\\Logging_information\\", f"Pricing_automation_{fcurrent_time}.log")
+log_file = os.path.join("D:\\blue_items_report_automation\\Logging_information\\", f"Pricing_automation_{fcurrent_time}.log")
 logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
 
@@ -30,12 +30,65 @@ def connect_to_postgres(dbname, user, password, host, port):
         return None
 
 
-def read_data_into_table(connection, df):
+def read_data_into_table(connection, df, new_loop):
     # replace the company_df with P21_folder
+
+    if new_loop == "yes":
+        cursor = connection.cursor()
+        # SQL query to delete existing data into the table
+        sqld = """
+        delete from blue_items;
+        """
+
+        # Execute the SQL query with the data from the current row
+        cursor.execute(sqld)
+
+        connection.commit()
+        cursor.close()
+
 
     main_df = pd.DataFrame() 
 
     main_df = df[df["discrepancy_types"] != "All right"]
+
+    # Maximum allowed length for each column
+    max_lengths = {
+        "supplier_part_no": 200,
+        "clean_sup_part_no": 200,
+        "supplier_id": 200,
+        "item_prefix": 200,
+        "item_id": 200,
+        "clean_item": 200,
+        "short_code": 200,
+        "product_type": 200,
+        "on_price_book_flag": 200,
+        "cln_location_cnt": 200,
+        "no_of_suppliers": 200,
+        "no_of_locations": 200,
+        "buyable_locs": 200,
+        "sellable_locs": 200,
+        "delete_locs": 200,
+        "discontinued_locs": 200,
+        "prod_groups": 200,
+        "prod_grps": 200,
+        "sales_disc_grp": 200,
+        "sales_disc_grps": 200,
+        "purch_disc_grp": 200,
+        "purch_disc_grps": 200,
+        "std_cost_updates": 200,
+        "std_cost_update_amt": 200,
+        "discrepancy_types": 1000
+    }
+
+    cursor = connection.cursor()
+
+    for index, row in main_df.iterrows():
+        # Check the length of each value
+        for column, max_length in max_lengths.items():
+            if isinstance(row[column], str) and len(row[column]) > max_length:
+                
+                print(f"Row {index}, Column '{column}' exceeds max length of {max_length} characters: '{row[column]}'")
+                raise ValueError
 
     cursor = connection.cursor()
 
@@ -64,7 +117,7 @@ def read_data_into_table(connection, df):
         purch_disc_grps = row["purch_disc_grps"]
         std_cost_updates = row["std_cost_updates"]
         std_cost_update_amt = row["std_cost_update_amt"]
-        discrepancy_type = row["discrepancy_type"]
+        discrepancy_type = row["discrepancy_types"]
 
         # SQL query to insert data into the table
         sql = """
@@ -84,7 +137,7 @@ def read_data_into_table(connection, df):
             purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
         ))
 
-    
+    connection.commit()
     cursor.close()
         
 

@@ -1,6 +1,6 @@
 CREATE TABLE blue_items (
-    supplier_part_no VARCHAR(120),
-    clean_sup_part_no VARCHAR(120),
+    supplier_part_no VARCHAR(200),
+    clean_sup_part_no VARCHAR(20),
     supplier_id VARCHAR(120),
     item_prefix VARCHAR(120),
     item_id VARCHAR(120),

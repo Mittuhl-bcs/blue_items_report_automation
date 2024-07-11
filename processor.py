@@ -39,9 +39,10 @@ class processor():
     # Checks the criteria given
     def checker(self, df):
 
-        discrepancy_types = []
 
         for index, row in df.iterrows():
+            discrepancy_types = []
+
 
             discrepancy_flag = 0
 
@@ -82,16 +83,16 @@ class processor():
                 discrepancy_types.append("Sales disc group")
                 discrepancy_flag = 1
 
-            if df.loc[index, "restricted_class"] != np.nan:
+            """if df.loc[index, "restricted_class"] != np.nan:
                 discrepancy_types.append("Restricted class")
                 discrepancy_flag = 1
-
+            """
             if df.loc[index, "std_cost_update_amt"] != 0:
                 if df.loc[index, "std_cost_updates"] <= 0:
                     discrepancy_types.append("Standard cost locations")
                     discrepancy_flag = 1
 
-            if df.loc[index, "product type"] != "Regular":
+            if df.loc[index, "product_type"] != "Regular":
                 discrepancy_types.append("Product type")
                 discrepancy_flag = 1
 
@@ -117,14 +118,23 @@ class processor():
                 discrepancy_types.append("Cost")
                 discrepancy_flag = 1
 
-            if df.loc[index, "suppier_list"] != 0:
+            if df.loc[index, "supplier_list"] != 0:
                 discrepancy_types.append("list price")   
                 discrepancy_flag = 1
 
+            
             shortcode = df.loc[index, "short_code"]
-            shortcode_cleaned = re.sub(r'[^a-zA-Z0-9\s]', "", shortcode)
-            if shortcode_cleaned != df.loc[index, "clean_sup_part_no"]:     # needs to be included in query
-                discrepancy_types.append("shortcode & SPN")       # question: shortcode is a part of SPN?
+
+            if pd.notnull(shortcode):
+                shortcode_cleaned = re.sub(r'[^a-zA-Z0-9\s]', "", shortcode)
+                #print(shortcode_cleaned)
+                
+                if shortcode_cleaned != df.loc[index, "clean_sup_part_no"]:     # needs to be included in query
+                    discrepancy_types.append("shortcode & SPN")       # question: shortcode is a part of SPN?
+                    discrepancy_flag = 1
+
+            if pd.isnull(shortcode) :
+                discrepancy_types.append("empty shortcode")
                 discrepancy_flag = 1
 
             if df.loc[index, "std_cost_updates"] > 0:
@@ -137,6 +147,7 @@ class processor():
                 df.loc[index, "discrepancy_types"] = "All right"
 
             elif discrepancy_flag == 1:
+                discrepancy_types.sort()
                 joined_discrepany = " - ".join(discrepancy_types)
 
                 df.loc[index, "discrepancy_types"] = joined_discrepany
@@ -145,7 +156,7 @@ class processor():
         return df
     
 
-    def main():
+    def main(self):
         
         processorob = processor()
         df = processorob.read_data()

@@ -36,6 +36,17 @@ class processor():
         return df
 
 
+    def modifier(self, df):
+
+        df["supplier_cost"] = df["supplier_cost"].round(2)
+        df["supplier_list"] = df["supplier_list"].round(2)
+        df["p1"] = df["p1"].round(2)
+        df["std_cost_update_amt"] = df["std_cost_update_amt"].round(2)
+        df["max_mac"] = df["max_mac"].round(2)
+
+        return df
+    
+
     # Checks the criteria given
     def checker(self, df):
 
@@ -49,10 +60,6 @@ class processor():
             cost = df.loc[index, "supplier_cost"]
             listp = df.loc[index, "supplier_list"]
             p1 = df.loc[index, "p1"]
-
-            df.loc[index, "supplier_cost"] = round(cost, 2)
-            df.loc[index, "supplier_list"] = round(listp, 2)
-            df.loc[index, "p1"] = round(p1, 2)
 
             cost = round(cost, 2)
             listp =round(listp, 2)
@@ -115,7 +122,6 @@ class processor():
             
             if p1 != p1_com:
                 discrepancy_types.append("P1")
-                discrepancy_types.append("P1")
                 discrepancy_flag = 1
 
             if df.loc[index, "restricted"] != "N":
@@ -170,6 +176,7 @@ class processor():
         processorob = processor()
         df = processorob.read_data()
         df = processorob.column_initiator(df)
+        df = processorob.modifier(df)
         df = processorob.checker(df)
 
         return df

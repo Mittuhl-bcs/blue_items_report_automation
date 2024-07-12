@@ -103,8 +103,8 @@ def read_data_into_table(connection, df, new_loop):
         product_type = row["product_type"]
         on_price_book_flag = row["on_price_book_flag"]
         p1 = row["p1"]
-        supplier_list = ["supplier_list"]
-        supplier_cost = ["supplier_cost"]
+        supplier_list = row["supplier_list"]
+        supplier_cost = row["supplier_cost"]
         cln_location_cnt = row["cln_location_cnt"]
         no_of_suppliers = row["no_of_suppliers"]
         no_of_locations = row["no_of_locations"]
@@ -129,18 +129,18 @@ def read_data_into_table(connection, df, new_loop):
         sql = """
         INSERT INTO blue_items (
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, short_code, product_type, 
-            on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
+            on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, discrepancy_type
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         # Execute the SQL query with the data from the current row
         cursor.execute(sql, (
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, shortcode, product_type, 
-            on_price_book_flag, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
+            on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, discrepancy_type
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, discrepancy_type
         ))
 
     connection.commit()

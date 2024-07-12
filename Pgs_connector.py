@@ -102,6 +102,9 @@ def read_data_into_table(connection, df, new_loop):
         shortcode = row["short_code"]
         product_type = row["product_type"]
         on_price_book_flag = row["on_price_book_flag"]
+        p1 = row["p1"]
+        supplier_list = ["supplier_list"]
+        supplier_cost = ["supplier_cost"]
         cln_location_cnt = row["cln_location_cnt"]
         no_of_suppliers = row["no_of_suppliers"]
         no_of_locations = row["no_of_locations"]
@@ -117,6 +120,9 @@ def read_data_into_table(connection, df, new_loop):
         purch_disc_grps = row["purch_disc_grps"]
         std_cost_updates = row["std_cost_updates"]
         std_cost_update_amt = row["std_cost_update_amt"]
+        restricted = row["restricted"]
+        max_mac = row["max_mac"]
+        no_of_locs = row["no_of_locs"]
         discrepancy_type = row["discrepancy_types"]
 
         # SQL query to insert data into the table

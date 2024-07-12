@@ -8,6 +8,9 @@ CREATE TABLE blue_items (
     short_code VARCHAR(120),
     product_type VARCHAR(120),
     on_price_book_flag VARCHAR(120),
+    p1 float(200),
+    supplier_list float(200),
+    supplier_cost float(200),
     cln_location_cnt VARCHAR(120),
     no_of_suppliers VARCHAR(120),
     no_of_locations VARCHAR(120),
@@ -23,5 +26,8 @@ CREATE TABLE blue_items (
     purch_disc_grps VARCHAR(120),
     std_cost_updates VARCHAR(120),
     std_cost_update_amt VARCHAR(120),
+    restricted VARCHAR(20),
+    max_mac VARCHAR(20),
+    no_of_locs VARCHAR(20),
     discrepancy_type VARCHAR(120)
 );

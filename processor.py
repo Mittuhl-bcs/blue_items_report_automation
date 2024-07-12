@@ -50,6 +50,14 @@ class processor():
             listp = df.loc[index, "supplier_list"]
             p1 = df.loc[index, "p1"]
 
+            df.loc[index, "supplier_cost"] = round(cost, 2)
+            df.loc[index, "supplier_list"] = round(listp, 2)
+            df.loc[index, "p1"] = round(p1, 2)
+
+            cost = round(cost, 2)
+            listp =round(listp, 2)
+            p1 = round(p1, 2)
+
 
             if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
                 discrepancy_types.append("SPN & itemid")
@@ -75,11 +83,11 @@ class processor():
                 discrepancy_types.append("Discontinued locations")
                 discrepancy_flag = 1
 
-            if df.loc[index, "purch_disc_grps"] == "DEFAULT":
+            if df.loc[index, "purch_disc_grps"] != "DEFAULT":
                 discrepancy_types.append("Product disc group") # question : should it include Default with others, or should it be only default
                 discrepancy_flag = 1
 
-            if df.loc[index, "sales_disc_grps"] == "NPBSINV":
+            if df.loc[index, "sales_disc_grps"] != "NPBSINV":
                 discrepancy_types.append("Sales disc group")
                 discrepancy_flag = 1
 
@@ -107,6 +115,7 @@ class processor():
             
             if p1 != p1_com:
                 discrepancy_types.append("P1")
+                discrepancy_types.append("P1")
                 discrepancy_flag = 1
 
             if df.loc[index, "restricted"] != "N":
@@ -115,7 +124,7 @@ class processor():
 
 
             if df.loc[index, "supplier_cost"] != 0:
-                discrepancy_types.append("Cost")
+                discrepancy_types.append("Supplier Cost")
                 discrepancy_flag = 1
 
             if df.loc[index, "supplier_list"] != 0:

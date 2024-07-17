@@ -8,6 +8,7 @@ import os
 import json
 import mailer
 import time
+import pandas as pd
 
 
 dbname = 'BCS_items'
@@ -43,6 +44,15 @@ def runner_main(new_loop):
     pgs.export_table_to_csv(conn, table_name, output_file)
     conn.close()
 
+    formatted_df = pd.read_csv(output_file)
+    formatted_df = formatted_df[formatted_df["item_id", "supplier_part_no", "supplier_id", "prod_grps", "sales_disc_grps", "purch_disc_grps", "list", "p1", "std_cost_update_amt"]]
+
+    formatted_df["on_price_book"] = "N"
+    formatted_df["tax_grp_id"] = "ALL"
+    formatted_df["safety_stock"] = "Default"
+    formatted_df["primary_supplier"] = "Y"
+
+    formatted_df.to_excel("D:\\Temp_items_discrepancy_reports\\Formatted_Discrepancies - Blue items - Price matching report {day}-{month}-{year}.xlsx")
 
     # Send mails to the recipients with the attachments
     # mailresult = mailer.send_email(output_file)

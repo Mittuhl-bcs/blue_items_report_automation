@@ -57,17 +57,17 @@ class processor():
 
             discrepancy_flag = 0
 
-            cost = df.loc[index, "supplier_cost"]
-            listp = df.loc[index, "supplier_list"]
-            p1 = df.loc[index, "p1"]
+            #cost = round(df.loc[index, "supplier_cost"],2)
+            listp = round(df.loc[index, "supplier_list"],2)
+            p1 = round(df.loc[index, "p1"],2)
 
-            cost = round(cost, 2)
+            #cost = round(cost, 2)
             listp =round(listp, 2)
             p1 = round(p1, 2)
 
 
             if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
-                discrepancy_types.append("SPN & itemid")
+                discrepancy_types.append("Clean SPN & clean itemid")
                 discrepancy_flag = 1
             
             if df.loc[index, "prod_grps"] != "BCS INV":
@@ -111,18 +111,20 @@ class processor():
                 discrepancy_types.append("Product type")
                 discrepancy_flag = 1
 
-            p1_cal = round((cost / 0.65) * 2, 2)
-            p1_com = 0
+            if round(df.loc[index, "max_mac"],2) != 0:
+                cost = round(df.loc[index, "std_cost_update_amt"],2)
+                p1_cal = round((cost / 0.65) * 2, 2)
+                p1_com = 0
 
-            if p1_cal < round(listp, 2):
-                p1_com = listp
-            else:
-                p1_com = round((cost / 0.65) * 2, 2)
+                if p1_cal < round(listp, 2):
+                    p1_com = listp
+                else:
+                    p1_com = round((cost / 0.65) * 2, 2)
 
-            
-            if p1 != p1_com:
-                discrepancy_types.append("P1")
-                discrepancy_flag = 1
+                
+                if p1 != p1_com:
+                    discrepancy_types.append("P1")
+                    discrepancy_flag = 1
 
             if df.loc[index, "restricted"] != "N":
                 discrepancy_types.append("Restricted")
@@ -152,7 +154,7 @@ class processor():
                 discrepancy_types.append("empty shortcode")
                 discrepancy_flag = 1
 
-            if df.loc[index, "std_cost_updates"] != round(df.loc[index, "max_mac"],2):
+            if round(df.loc[index, "std_cost_update_amt"],2) != round(df.loc[index, "max_mac"],2):
                 discrepancy_types.append("Standard cost")
                 discrepancy_flag = 1
  

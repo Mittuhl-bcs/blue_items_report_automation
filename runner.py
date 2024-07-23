@@ -45,7 +45,7 @@ def runner_main(new_loop):
     conn.close()
 
     formatted_df = pd.read_csv(output_file)
-    formatted_df = formatted_df[["item_id", "supplier_part_no", "supplier_id", "prod_grps", "sales_disc_grps", "purch_disc_grps", "supplier_list", "p1", "supplier_cost", "std_cost_update_amt"]]
+    formatted_df = formatted_df[["item_id", "supplier_part_no", "supplier_id", "prod_grps", "sales_disc_grps", "purch_disc_grps", "supplier_list", "p1", "supplier_cost", "std_cost_update_amt", "last_po_supplier", "discrepancy_types"]]
 
     formatted_df["on_price_book"] = "N"
     formatted_df["tax_grp_id"] = "ALL"

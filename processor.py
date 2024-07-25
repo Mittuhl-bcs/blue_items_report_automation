@@ -63,7 +63,7 @@ class processor():
 
             #cost = round(cost, 2)
             listp =round(listp, 2)
-            p1 = round(p1, 2)
+            p1 = int(round(p1, 2))
 
 
             if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
@@ -113,18 +113,23 @@ class processor():
 
             if round(df.loc[index, "max_mac"],2) != 0:
                 cost = round(df.loc[index, "std_cost_update_amt"],2)
-                p1_cal = round((cost / 0.65) * 2, 2)
+                p1_cal = int(round((cost / 0.65) * 2, 2))
                 p1_com = 0
 
                 if p1_cal < round(listp, 2):
                     p1_com = listp
                 else:
-                    p1_com = round((cost / 0.65) * 2, 2)
+                    p1_com = int(round((cost / 0.65) * 2, 2))
 
                 
                 if p1 != p1_com:
-                    discrepancy_types.append("P1")
-                    discrepancy_flag = 1
+                    diff = p1 - p1_com
+                    tolerance = 0.2
+
+                    if abs(diff)>= tolerance:
+
+                        discrepancy_types.append("P1")
+                        discrepancy_flag = 1
 
             if df.loc[index, "restricted"] != "N":
                 discrepancy_types.append("Restricted")
@@ -142,13 +147,22 @@ class processor():
             
             shortcode = df.loc[index, "short_code"]
 
+            
+
             if pd.notnull(shortcode):
-                shortcode_cleaned = re.sub(r'[^a-zA-Z0-9\s]', "", shortcode)
-                #print(shortcode_cleaned)
                 
-                if shortcode_cleaned != df.loc[index, "clean_sup_part_no"]:     # needs to be included in query
-                    discrepancy_types.append("shortcode & SPN")       # question: shortcode is a part of SPN?
-                    discrepancy_flag = 1
+                if pd.notnull(df.loc[index, "supplier_part_no"]):
+                    if len(df.loc[index, "supplier_part_no"]) > 29:
+                        
+                        if df.loc[index, "short_code"] != df.loc[index, "supplier_part_no"][0:30]:
+                            discrepancy_types.append("Shortcode & SPN")
+                            discrepancy_flag = 1
+
+                    else:
+                        if df.loc[index, "short_code"] != df.loc[index, "supplier_part_no"]:
+                            discrepancy_types.append("Shortcode & SPN")
+                            discrepancy_flag = 1                    
+
 
             if pd.isnull(shortcode) :
                 discrepancy_types.append("empty shortcode")

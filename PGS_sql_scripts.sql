@@ -29,6 +29,6 @@ CREATE TABLE blue_items (
     restricted VARCHAR(120),
     max_mac VARCHAR(120),
     no_of_locs VARCHAR(120),
-    
+    last_po_supplier VARCHAR(400)
     discrepancy_type VARCHAR(400)
 );

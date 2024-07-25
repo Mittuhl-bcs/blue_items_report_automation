@@ -132,7 +132,7 @@ def read_data_into_table(connection, df, new_loop):
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, short_code, product_type, 
             on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, discrepancy_type, last_po_supplier
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, discrepancy_type 
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
@@ -141,7 +141,7 @@ def read_data_into_table(connection, df, new_loop):
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, shortcode, product_type, 
             on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, discrepancy_type, last_po_supplier
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, discrepancy_type 
         ))
 
     connection.commit()

@@ -44,13 +44,17 @@ def runner_main(new_loop):
     pgs.export_table_to_csv(conn, table_name, output_file)
     conn.close()
 
-    formatted_df = pd.read_csv(output_file)
-    formatted_df = formatted_df[["item_id", "supplier_part_no", "supplier_id", "prod_grps", "sales_disc_grps", "purch_disc_grps", "supplier_list", "p1", "supplier_cost", "std_cost_update_amt", "last_po_supplier", "discrepancy_types"]]
+    formatted_df_f = pd.read_csv(output_file)
+    formatted_df = formatted_df_f[["item_id", "supplier_part_no", "supplier_id", "prod_grps", "sales_disc_grps", "purch_disc_grps", "supplier_list", "p1", "supplier_cost", "std_cost_update_amt"]]
+    formatted_df = formatted_df.copy()
 
-    formatted_df["on_price_book"] = "N"
-    formatted_df["tax_grp_id"] = "ALL"
-    formatted_df["safety_stock"] = "Default"
-    formatted_df["primary_supplier"] = "Y"
+    formatted_df.loc[:, "on_price_book"] = "N"
+    formatted_df.loc[:, "tax_grp_id"] = "ALL"
+    formatted_df.loc[:, "safety_stock"] = "Default"
+    formatted_df.loc[:, "primary_supplier"] = "Y"
+
+    formatted_df["last_po_supplier"] = formatted_df_f[ "last_po_supplier"]
+    formatted_df["discrepancy_type"] = formatted_df_f["discrepancy_type"]
 
     formatted_df.to_excel(f"D:\\Temp_items_discrepancy_reports\\Formatted_Discrepancies - Blue items - Price matching report {day}-{month}-{year}.xlsx", index=False)
 

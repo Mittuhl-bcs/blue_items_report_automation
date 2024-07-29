@@ -50,7 +50,9 @@ def read_data_into_table(connection, df, new_loop):
     main_df = pd.DataFrame() 
 
     main_df = df[df["discrepancy_types"] != "All right"]
-    main_df['supplier_id'] = main_df['supplier_id'].astype(str)
+    main_df.loc[:, 'supplier_id'] = main_df['supplier_id'].astype(str)
+    main_df.loc[:, 'last_price_update'] = main_df['last_price_update'].astype(str)
+
     exclude_ids = ["130001", "130014", "185447", "130020", "130026", "130027", "130029", "130031", "130033", "130007", "130036", "130039", "130040", "130041", "130006"]
     filtered_df = main_df[~main_df['supplier_id'].isin(exclude_ids)]
 
@@ -128,6 +130,8 @@ def read_data_into_table(connection, df, new_loop):
         no_of_locs = row["no_of_locs"]
         discrepancy_type = row["discrepancy_types"]
         last_po_supplier = row["last_po_supplier"]
+        last_price_update = row["last_price_update"]
+        total_qty_avail = row["total_qty_avail"]
 
         # SQL query to insert data into the table
         sql = """
@@ -135,8 +139,8 @@ def read_data_into_table(connection, df, new_loop):
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, short_code, product_type, 
             on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, discrepancy_type 
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, last_price_update, total_qty_avail, discrepancy_type 
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         # Execute the SQL query with the data from the current row
@@ -144,7 +148,7 @@ def read_data_into_table(connection, df, new_loop):
             supplier_part_no, clean_sup_part_no, supplier_id, item_prefix, item_id, clean_item, shortcode, product_type, 
             on_price_book_flag, p1, supplier_list, supplier_cost, cln_location_cnt, no_of_suppliers, no_of_locations, buyable_locs, sellable_locs, 
             delete_locs, discontinued_locs, prod_groups, prod_grps, sales_disc_grp, sales_disc_grps, purch_disc_grp, 
-            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, discrepancy_type 
+            purch_disc_grps, std_cost_updates, std_cost_update_amt, restricted, max_mac, no_of_locs, last_po_supplier, last_price_update, total_qty_avail, discrepancy_type 
         ))
 
     connection.commit()

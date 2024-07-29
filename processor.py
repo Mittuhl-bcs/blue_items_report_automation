@@ -11,6 +11,7 @@ from datetime import datetime
 import json
 import BCS_connector_blue
 import Pgs_connector
+import math
 
 
 
@@ -43,6 +44,9 @@ class processor():
         df["p1"] = df["p1"].round(2)
         df["std_cost_update_amt"] = df["std_cost_update_amt"].round(2)
         df["max_mac"] = df["max_mac"].round(2)
+        
+        # Ensure 'NaT' values are replaced with None
+        df = df.replace({pd.NaT: None})
 
         return df
     
@@ -91,7 +95,7 @@ class processor():
                 discrepancy_flag = 1
 
             if df.loc[index, "purch_disc_grps"].strip() != "DEFAULT":
-                discrepancy_types.append("Product disc group") # question : should it include Default with others, or should it be only default
+                discrepancy_types.append("Purchase disc group") # question : should it include Default with others, or should it be only default
                 discrepancy_flag = 1
 
             if df.loc[index, "sales_disc_grps"].strip() != "NPBSINV":
@@ -111,6 +115,7 @@ class processor():
                 discrepancy_types.append("Product type")
                 discrepancy_flag = 1
 
+            """
             if round(df.loc[index, "max_mac"],2) != 0:
                 cost = round(df.loc[index, "std_cost_update_amt"],2)
                 p1_cal = int(round((cost / 0.65) * 2, 2))
@@ -130,6 +135,7 @@ class processor():
 
                         discrepancy_types.append("P1")
                         discrepancy_flag = 1
+            """
 
             if df.loc[index, "restricted"] != "N":
                 discrepancy_types.append("Restricted")

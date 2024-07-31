@@ -73,6 +73,17 @@ class processor():
             if df.loc[index, "clean_sup_part_no"] != df.loc[index, "clean_item"]:
                 discrepancy_types.append("Clean SPN & clean itemid")
                 discrepancy_flag = 1
+                
+
+            item_id = df.loc[index, "item_id"]
+
+            if pd.notnull(item_id):
+                pattern = re.compile(r'[^a-zA-Z0-9 ]')
+
+                if pattern.search(item_id):
+                    discrepancy_types.append("Item Id")
+                    discrepancy_flag = 1
+
             
             if df.loc[index, "prod_grps"] != "BCS INV":
                 discrepancy_types.append("product group")
@@ -102,10 +113,6 @@ class processor():
                 discrepancy_types.append("Sales disc group")
                 discrepancy_flag = 1
 
-            """if df.loc[index, "restricted_class"] != np.nan:
-                discrepancy_types.append("Restricted class")
-                discrepancy_flag = 1
-            """
             if df.loc[index, "std_cost_update_amt"] != 0:
                 if df.loc[index, "std_cost_updates"] <= 0:
                     discrepancy_types.append("Standard cost locations")
@@ -115,28 +122,7 @@ class processor():
                 discrepancy_types.append("Product type")
                 discrepancy_flag = 1
 
-            """
-            if round(df.loc[index, "max_mac"],2) != 0:
-                cost = round(df.loc[index, "std_cost_update_amt"],2)
-                p1_cal = int(round((cost / 0.65) * 2, 2))
-                p1_com = 0
-
-                if p1_cal < round(listp, 2):
-                    p1_com = listp
-                else:
-                    p1_com = int(round((cost / 0.65) * 2, 2))
-
-                
-                if p1 != p1_com:
-                    diff = p1 - p1_com
-                    tolerance = 0.2
-
-                    if abs(diff)>= tolerance:
-
-                        discrepancy_types.append("P1")
-                        discrepancy_flag = 1
-            """
-
+           
             if df.loc[index, "restricted"] != "N":
                 discrepancy_types.append("Restricted")
                 discrepancy_flag = 1 

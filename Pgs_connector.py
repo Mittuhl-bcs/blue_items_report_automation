@@ -53,7 +53,7 @@ def read_data_into_table(connection, df, new_loop):
     main_df.loc[:, 'supplier_id'] = main_df['supplier_id'].astype(str)
     main_df.loc[:, 'last_price_update'] = main_df['last_price_update'].astype(str)
 
-    exclude_ids = ["130001", "130014", "185447", "130020", "130026", "130027", "130029", "130031", "130033", "130007", "130036", "130039", "130040", "130041", "130006"]
+    exclude_ids = ["130001", "133986", "130032", "130004", "130014", "185447", "130020", "130026", "130027", "130029", "130031", "130033", "130007", "130036", "130039", "130040", "130041", "130006"]
     filtered_df = main_df[~main_df['supplier_id'].isin(exclude_ids)]
 
     # Maximum allowed length for each column

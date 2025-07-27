@@ -113,10 +113,10 @@ class processor():
                 discrepancy_types.append("Sales disc group")
                 discrepancy_flag = 1
 
-            if df.loc[index, "std_cost_update_amt"] != 0:
-                if df.loc[index, "std_cost_updates"] <= 0:
-                    discrepancy_types.append("Standard cost locations")
-                    discrepancy_flag = 1
+            #if df.loc[index, "std_cost_update_amt"] != 0:
+            if df.loc[index, "std_cost_updates"] > 0:
+                discrepancy_types.append("Standard cost locations")
+                discrepancy_flag = 1
 
             if df.loc[index, "product_type"] != "Regular":
                 discrepancy_types.append("Product type")
